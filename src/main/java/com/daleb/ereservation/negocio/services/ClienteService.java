@@ -3,6 +3,8 @@
  */
 package com.daleb.ereservation.negocio.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,6 +66,15 @@ public class ClienteService {
    */
   public Cliente findByIdentification(String identificationCli) {
     return clienteRepository.findByIdentificacion(identificationCli);
+  }
+  
+  
+  /**
+   * Método para devolver todos los cliente
+   * @return
+   */
+  public List<Cliente> findAll(){
+    return clienteRepository.findAll();
   }
 
 }
