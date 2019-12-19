@@ -21,6 +21,11 @@ import com.daleb.ereservation.model.Cliente;
 import com.daleb.ereservation.negocio.services.ClienteService;
 import com.daleb.ereservation.vista.resources.vo.ClienteVO;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 /**
  * Controladores expuestos en el servicio web cliente
  * 
@@ -29,6 +34,7 @@ import com.daleb.ereservation.vista.resources.vo.ClienteVO;
  */
 @RestController
 @RequestMapping("/api/cliente")
+@Api(tags = "cliente")
 public class ClienteResource {
   @Autowired
   ClienteService clienteService;
@@ -39,6 +45,9 @@ public class ClienteResource {
    * @return
    */
   @PostMapping
+  @ApiOperation(value = "Crear cliente", notes = "servicio que permite crear un nuevo cliente")
+  @ApiResponses(value = { @ApiResponse(code = 201, message = "Cliente creado correctamente"),
+      @ApiResponse(code = 400, message = "Solicitud Inválida") })
   public ResponseEntity<Cliente> createCliente(@RequestBody ClienteVO clienteVO) {
     Cliente cliente = new Cliente();
     cliente.setNombreCli(clienteVO.getNombreCli());
@@ -57,6 +66,9 @@ public class ClienteResource {
    * @return
    */
   @PutMapping("/{identification}")
+  @ApiOperation(value = "actualizar cliente", notes = "servicio para actualizar un nuevo cliente")
+  @ApiResponses(value = { @ApiResponse(code = 201, message = "Cliente actualizado correctamente"),
+      @ApiResponse(code = 404, message = "Cliente no encontrado") })
   public ResponseEntity<Cliente> updateCliente(
       @PathVariable("identification") String identification, ClienteVO clienteVO) {
     Cliente cliente = clienteService.findByIdentification(identification);
@@ -79,6 +91,9 @@ public class ClienteResource {
    * @param indentification
    */
   @DeleteMapping("/{identification}")
+  @ApiOperation(value = "eliminar cliente", notes = "servicio para eliminar un nuevo cliente")
+  @ApiResponses(value = { @ApiResponse(code = 201, message = "Cliente eliminado correctamente"),
+      @ApiResponse(code = 404, message = "Cliente no encontrado") })
   public void removeCliente(@PathVariable("identification") String indentification) {
     Cliente cliente = clienteService.findByIdentification(indentification);
     if (cliente != null) {
@@ -92,6 +107,9 @@ public class ClienteResource {
    * @return
    */
   @GetMapping
+  @ApiOperation(value = "Listar clientes", notes = "servicio para listar  todos los cliente")
+  @ApiResponses(value = { @ApiResponse(code = 201, message = "Clientes encontrados"),
+      @ApiResponse(code = 404, message = "Clientes no encontrados") })
   public ResponseEntity<List<Cliente>> findAll() {
     return ResponseEntity.ok(clienteService.findAll());
   }
